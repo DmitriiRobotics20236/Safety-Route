@@ -1,4 +1,4 @@
-# Road Runner Quickstart
+# WELCOME
+Всем привет! Это ГитХаб команды MindPower. Мы принимаем участие в международных сорвенованиях по робототехнике - Лига Технологий.
 
-Check out the [docs](https://rr.brott.dev/docs/v1-0/tuning/).
 
