@@ -14,9 +14,7 @@ import org.firstinspires.ftc.teamcode.modules.Servo_flip;
 
 @TeleOp(name = "MainTeleOp")
 public class Mainclass extends LinearOpMode {
-    //езда
-    static final double TURN_DEADZONE = 0.05;
-    static final double BUMPER_TURN_SPEED = 0.9;
+
 
     // захваты пластин
     Servo servo_1_claw, servo_2_claw;
