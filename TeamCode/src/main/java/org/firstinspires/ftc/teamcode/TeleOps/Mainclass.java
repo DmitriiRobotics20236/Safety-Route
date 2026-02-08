@@ -63,8 +63,6 @@ public class Mainclass extends LinearOpMode {
             drive.drive(y, x, rx);
 
 
-
-
         }
     }
 }
