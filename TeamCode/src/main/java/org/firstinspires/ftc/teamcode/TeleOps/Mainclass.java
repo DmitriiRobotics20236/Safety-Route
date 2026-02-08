@@ -5,9 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Drive_mec_drive;
 import org.firstinspires.ftc.teamcode.modules.Last_Mecanum;
-import org.firstinspires.ftc.teamcode.modules.MecanumDrive;
 import org.firstinspires.ftc.teamcode.modules.Servo_claw_plastina;
 import org.firstinspires.ftc.teamcode.modules.Servo_flip;
 
