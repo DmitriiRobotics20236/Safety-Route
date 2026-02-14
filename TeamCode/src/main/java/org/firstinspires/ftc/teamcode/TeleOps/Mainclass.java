@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.modules.Arm;
 import org.firstinspires.ftc.teamcode.modules.Last_Mecanum;
 import org.firstinspires.ftc.teamcode.modules.Servo_claw_plastina;
 import org.firstinspires.ftc.teamcode.modules.Servo_flip;
@@ -23,11 +24,12 @@ public class Mainclass extends LinearOpMode {
 
     Last_Mecanum drive;
 
+    private Arm arm;
+
 
     @Override
     public void runOpMode() {
         drive = new Last_Mecanum(hardwareMap);
-
 
         servo_1_claw = hardwareMap.servo.get("servo1");
         servo_2_claw = hardwareMap.servo.get("servo2");
@@ -41,6 +43,8 @@ public class Mainclass extends LinearOpMode {
         servo4.setDirection(Servo.Direction.REVERSE);
 
         servoController_flip = new Servo_flip(servo3, servo4);
+
+        arm = new Arm(hardwareMap);
 
 
         waitForStart();
@@ -62,6 +66,14 @@ public class Mainclass extends LinearOpMode {
 
             drive.drive(y, x, rx);
 
+            // ===== КНОПКИ =====
+            if (gamepad2.a) {
+                arm.moveToPosition(arm.POS_LOW);
+            }
+
+            if (gamepad2.x) {
+                arm.moveToPosition(arm.POS_MID);
+            }
 
         }
     }
