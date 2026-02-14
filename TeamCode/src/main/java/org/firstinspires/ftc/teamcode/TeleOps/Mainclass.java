@@ -24,7 +24,7 @@ public class Mainclass extends LinearOpMode {
 
     Last_Mecanum drive;
 
-    private Arm arm;
+    
 
 
     @Override
@@ -66,15 +66,23 @@ public class Mainclass extends LinearOpMode {
 
             drive.drive(y, x, rx);
 
-            // ===== КНОПКИ =====
-            if (gamepad2.a) {
-                arm.moveToPosition(arm.POS_LOW);
+            if (gamepad2.y) {
+                arm.moveToPosition(arm.POS_HIGH);
             }
 
-            if (gamepad2.x) {
-                arm.moveToPosition(arm.POS_MID);
+            if (gamepad2.dpad_up) {
+                arm.moveToPosition(arm.POS_MAX);
             }
 
+            // ===== СТИК =====
+            if (Math.abs(gamepad2.left_stick_y) > 0.1) {
+                arm.manualControl(gamepad2.left_stick_y);
+            }
+
+            telemetry.addData("Left ticks", arm.getLeftPosition());
+            telemetry.addData("Right ticks", arm.getRightPosition());
+            telemetry.update();
         }
+
     }
 }
