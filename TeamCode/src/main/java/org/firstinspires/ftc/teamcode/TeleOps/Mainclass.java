@@ -23,7 +23,6 @@ public class Mainclass extends LinearOpMode {
     boolean flipState = false;
     boolean lastTriggerState = false;
 
-
     Servo servo3, servo4;
 
     Last_Mecanum drive;
@@ -34,7 +33,6 @@ public class Mainclass extends LinearOpMode {
     @Override
     public void runOpMode() {
         drive = new Last_Mecanum(hardwareMap);
-
 
         servo_1_claw = hardwareMap.servo.get("servo1");
         servo_2_claw = hardwareMap.servo.get("servo2");
@@ -75,7 +73,7 @@ public class Mainclass extends LinearOpMode {
 
 
             double y = -gamepad1.left_stick_y;
-            double x = gamepad1.left_stick_x;
+            double x = -gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
             drive.drive(y, x, rx);

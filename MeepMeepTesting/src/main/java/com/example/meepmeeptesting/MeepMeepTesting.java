@@ -16,20 +16,23 @@ public class MeepMeepTesting {
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-70, -12, Math.toRadians(180)))
                 .lineToX(-34)
+                .strafeTo(new Vector2d(-34, -17))
+                .strafeTo(new Vector2d(-34, 3))
+
                 //кладем пластинки
-                .lineToX(-38)
-                .turnTo(Math.toRadians(0))
-                .waitSeconds(1)
-                .lineToX(-49)
-                //камера если справа
-                //...
-                .strafeTo(new Vector2d(-49, 3))
-                .waitSeconds(1)
-                //если камера по центру
-                //...
-                .strafeTo(new Vector2d(-49, 10))
-                //камера если камера слева
-                //...
+//                .lineToX(-38)
+//                .turnTo(Math.toRadians(0))
+//                .waitSeconds(1)
+//                .lineToX(-49)
+//                //камера если справа
+//                //...
+//
+//                .waitSeconds(1)
+//                //если камера по центру
+//                //...
+//                .strafeTo(new Vector2d(-49, 10))
+//                //камера если камера слева
+//                //...
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
