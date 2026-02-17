@@ -20,16 +20,21 @@ public class Mainclass extends LinearOpMode {
 
     private Servo_flip servoController_flip;
 
+    boolean flipState = false;
+    boolean lastTriggerState = false;
+
+
     Servo servo3, servo4;
 
     Last_Mecanum drive;
 
-    
+    private Arm arm;
 
 
     @Override
     public void runOpMode() {
         drive = new Last_Mecanum(hardwareMap);
+
 
         servo_1_claw = hardwareMap.servo.get("servo1");
         servo_2_claw = hardwareMap.servo.get("servo2");
@@ -54,35 +59,31 @@ public class Mainclass extends LinearOpMode {
             servo2.update(gamepad2.right_bumper);
 
 
-            if (gamepad2.left_trigger > 0.5) {
-                servoController_flip.setPositionA();
-            } else if (gamepad2.right_trigger > 0.5) {
-                servoController_flip.setPositionB();
+            boolean currentTriggerState = gamepad2.right_trigger > 0.5;
+
+            if (currentTriggerState && !lastTriggerState) {
+                flipState = !flipState;
+
+                if (flipState) {
+                    servoController_flip.setPositionB();
+                } else {
+                    servoController_flip.setPositionA();
+                }
             }
 
+            lastTriggerState = currentTriggerState;
+
+
             double y = -gamepad1.left_stick_y;
-            double x = -gamepad1.left_stick_x;
+            double x = gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
             drive.drive(y, x, rx);
-
-            if (gamepad2.y) {
-                arm.moveToPosition(arm.POS_HIGH);
-            }
-
-            if (gamepad2.dpad_up) {
-                arm.moveToPosition(arm.POS_MAX);
-            }
 
             // ===== СТИК =====
             if (Math.abs(gamepad2.left_stick_y) > 0.1) {
                 arm.manualControl(gamepad2.left_stick_y);
             }
-
-            telemetry.addData("Left ticks", arm.getLeftPosition());
-            telemetry.addData("Right ticks", arm.getRightPosition());
-            telemetry.update();
         }
-
     }
 }

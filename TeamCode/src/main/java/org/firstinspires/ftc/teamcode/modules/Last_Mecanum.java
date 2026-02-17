@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class Last_Mecanum {
 
     DcMotor frontLeftMotor;
@@ -25,7 +27,7 @@ public class Last_Mecanum {
     }
 
     public void drive(double y, double x, double rx) {
-        x *= 1.77; // компенсация страфа
+        x *= 1.81; // компенсация страфа
 
         double denominator = Math.max(
                 Math.abs(y) + Math.abs(x) + Math.abs(rx),
@@ -33,7 +35,7 @@ public class Last_Mecanum {
         );
 
         double frontLeftPower = (y + x + rx) / denominator;
-        double backLeftPower = (y - x + rx) / denominator;
+        double backLeftPower = ( y - x + rx) / denominator;
         double frontRightPower = (y - x - rx) / denominator;
         double backRightPower = (y + x - rx) / denominator;
 
