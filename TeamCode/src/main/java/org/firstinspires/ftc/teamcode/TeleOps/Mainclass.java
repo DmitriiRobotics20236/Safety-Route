@@ -59,11 +59,20 @@ public class Mainclass extends LinearOpMode {
             servo2.update(gamepad2.right_bumper);
 
 
-            if (gamepad2.left_trigger > 0.5) {
-                servoController_flip.setPositionA();
-            } else if (gamepad2.right_trigger > 0.5) {
-                servoController_flip.setPositionB();
+            boolean currentTriggerState = gamepad2.right_trigger > 0.5;
+
+            if (currentTriggerState && !lastTriggerState) {
+                flipState = !flipState;
+
+                if (flipState) {
+                    servoController_flip.setPositionB();
+                } else {
+                    servoController_flip.setPositionA();
+                }
             }
+
+            lastTriggerState = currentTriggerState;
+
 
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x;
