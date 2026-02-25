@@ -4,9 +4,9 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-// ===== Класс управления рукой и создание Action для RoadRunner =====
 public class ArmAction_RR {
 
     private final DcMotor leftMotor;
@@ -17,37 +17,14 @@ public class ArmAction_RR {
         rightMotor = hardwareMap.get(DcMotor.class, "rightMotor_arm");
 
         leftMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightMotor.setDirection(DcMotor.Direction.FORWARD);
 
         leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        resetEncoders();
-    }
-
-    // ===== Сброс энкодеров =====
-    public void resetEncoders() {
-        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
-    // ===== Асинхронное движение руки =====
-    public void moveToPositionAsync(int targetTicks, double power) {
-        leftMotor.setTargetPosition(targetTicks);
-        rightMotor.setTargetPosition(targetTicks);
-
-        leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        leftMotor.setPower(Math.abs(power));
-        rightMotor.setPower(Math.abs(power));
-    }
-
-    public boolean isBusy() {
-        return leftMotor.isBusy() || rightMotor.isBusy();
+        // Всегда работаем без энкодеров
+        leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void stop() {
@@ -55,27 +32,44 @@ public class ArmAction_RR {
         rightMotor.setPower(0);
     }
 
-    public int getCurrentPosition() {
-        return leftMotor.getCurrentPosition();
-    }
+    // ===== Action по времени =====
+    public Action createTimedAction(double moveTimeSeconds, double power, Telemetry telemetry) {
 
-    // ===== Метод для создания Action для RoadRunner =====
-    public Action createAction(int targetTicks, double power, Telemetry telemetry) {
         return new Action() {
-            private boolean executed = false;
+
+            private final ElapsedTime timer = new ElapsedTime();
+            private boolean started = false;
 
             @Override
             public boolean run(TelemetryPacket packet) {
-                if (!executed) {
-                    moveToPositionAsync(targetTicks, power);
-                    executed = true;
-                    if (telemetry != null) {
-                        telemetry.addData("ArmAction", "Moved to " + targetTicks);
-                        telemetry.update();
-                    }
+
+                if (!started) {
+                    timer.reset();
+
+                    leftMotor.setPower(power);
+                    rightMotor.setPower(power);
+
+                    started = true;
                 }
-                return true; // мгновенное завершение Action
-                // если нужно ждать окончания движения: return !isBusy();
+
+                double currentTime = timer.seconds();
+
+                // Телеметрия
+                if (telemetry != null) {
+                    telemetry.addData("Arm Time", currentTime);
+                    telemetry.addData("Arm Power", power);
+                    telemetry.update();
+                }
+
+                packet.put("ArmTime", currentTime);
+
+                // Остановить по времени
+                if (currentTime >= moveTimeSeconds) {
+                    stop();
+                    return false; // завершить Action
+                }
+
+                return true;
             }
         };
     }

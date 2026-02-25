@@ -23,7 +23,7 @@ public class Arm {
     public void manualControl(double stickValue) {
 
         double power = stickValue;
-        power = Range.clip(power, -0.7, 0.7);
+        power = Range.clip(power, -0.65, 0.65);
 
         leftMotor.setPower(power);
         rightMotor.setPower(power);

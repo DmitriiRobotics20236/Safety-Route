@@ -16,8 +16,7 @@ public class MeepMeepTesting {
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-70, -12, Math.toRadians(180)))
                 .lineToX(-34)
-                .strafeTo(new Vector2d(-34, -17))
-                .strafeTo(new Vector2d(-34, 3))
+                .strafeTo(new Vector2d(-34, 25))
 
                 //кладем пластинки
 //                .lineToX(-38)
